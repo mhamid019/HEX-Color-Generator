@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Navigation</title>
+    
+    <!-- icon library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+
+        *{margin: 0; box-sizing: border-box;}
+        body{
+            font-size: 16px;
+            background: rgb(206, 205, 206);
+            font-family: system-ui, sans-serif;
+            position: relative;
+            height: 100vh;
+        }
+
+
+        .container {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 280px;
+            height: auto;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #3ee;
+            box-shadow: 0 0 15px #333;
+            margin: 2rem auto;
+            padding: 1rem;
+        }
+        .container h3 {color: rgb(72, 88, 88); margin-bottom: 10px;}
+        .container .color {
+            width: 100%;
+            height: 200px;
+            background: #6c6cbb;
+            border-radius: inherit;
+        }
+        .color + p {margin: 1.6rem auto 1rem; cursor: pointer;;}
+        .container button {
+            display: block;
+            margin: 1rem auto;
+            background: #487d48;
+            color: #ffe;
+            width: 50%;
+            border: 1px solid rgb(203, 239, 239);
+            outline: none;
+            padding: 8px 16px;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            box-shadow: 0 0 14px #903b3b inset;
+        }
+
+        .copy-text {
+            display: inline-block;
+            position: relative;
+            font-family: monospace;
+        }
+
+        .copy-text::after {
+            content: "Copied!";
+            position: absolute;
+            width: 120%;
+            left: 50%;
+            background: #333;
+            color: #eef;
+            padding: 5px;
+            border-radius: 4px;
+            transform: translateX(-50%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .copy-text.copied::after {opacity: 1;}
+
+        @media screen and (max-width: 300px) {
+            .container {width: 96%;}
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h3>Generate Color</h3>
+        <div class="color"></div>
+        <p title="Click to copy" id="hexText" class="copy-text">#6C6CBB</p>
+        <button>Click</button>
+    </div>
+
+
+
+    <script>
+
+        const myBtn = document.querySelector(".container button");
+        const bgColor = document.querySelector(".container .color");
+        const hexValText = document.querySelector("#hexText");
+
+        function randomColor() {
+            let color = "#";
+            const hexVal = "ABCDEF0123456789";
+            for(let i = 0; i < 6; i++) {
+                color += hexVal[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        myBtn.addEventListener("click", function() {
+            const randomColorText = randomColor();
+            bgColor.style.background = randomColorText;
+            hexValText.innerHTML = randomColorText;
+        });
+
+        const hexElem = document.querySelector("#hexText");
+        hexElem.addEventListener("click", function() {
+            const text = document.querySelector("#hexText").innerText;
+            navigator.clipboard.writeText(text)
+            .then(()=> {
+                hexElem.classList.add("copied");
+                setTimeout(() => {
+                    hexElem.classList.remove("copied");
+                }, 1500);
+            })
+            .catch(err => console.error("Copy failed", err));
+        });
+
+
+    </script>
+    
+</body>
+</html>
