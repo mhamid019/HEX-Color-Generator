@@ -35,15 +35,22 @@
             margin: 2rem auto;
             padding: 1rem;
         }
-        .container h3 {color: rgb(72, 88, 88); margin-bottom: 10px;}
+        .container h3 {color: rgb(72, 88, 88); margin-bottom: 10px; user-select: none;}
         .container .color {
             width: 100%;
             height: 200px;
             background: #6c6cbb;
             border-radius: inherit;
         }
-        .color + p {margin: 1.6rem auto 1rem; cursor: pointer;;}
-        .container button {
+        .color + p {margin: 1.6rem auto 1rem;}
+        
+        .btns {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btns button {
             display: block;
             margin: 1rem auto;
             background: #487d48;
@@ -56,7 +63,10 @@
             border-radius: 4px;
             cursor: pointer;
             box-shadow: 0 0 14px #903b3b inset;
+            transition: 0.4s;
+            user-select: none;
         }
+        button:hover {background: #285f28;;}
 
         .copy-text {
             display: inline-block;
@@ -92,15 +102,17 @@
     <div class="container">
         <h3>Generate Color</h3>
         <div class="color"></div>
-        <p title="Click to copy" id="hexText" class="copy-text">#6C6CBB</p>
-        <button>Click</button>
+        <p id="hexText" class="copy-text">#6C6CBB</p>
+        <div class="btns">
+            <button id="clickBtn">Generate</button>
+            <button id="copyBtn">Copy</button>
+        </div>
     </div>
-
-
 
     <script>
 
-        const myBtn = document.querySelector(".container button");
+        const clickBtn = document.querySelector(".container #clickBtn");
+        const copyBtn = document.querySelector(".container #copyBtn");
         const bgColor = document.querySelector(".container .color");
         const hexValText = document.querySelector("#hexText");
 
@@ -113,14 +125,14 @@
             return color;
         }
 
-        myBtn.addEventListener("click", function() {
+        clickBtn.addEventListener("click", function() {
             const randomColorText = randomColor();
             bgColor.style.background = randomColorText;
             hexValText.innerHTML = randomColorText;
         });
 
         const hexElem = document.querySelector("#hexText");
-        hexElem.addEventListener("click", function() {
+        copyBtn.addEventListener("click", function() {
             const text = document.querySelector("#hexText").innerText;
             navigator.clipboard.writeText(text)
             .then(()=> {
@@ -131,7 +143,6 @@
             })
             .catch(err => console.error("Copy failed", err));
         });
-
 
     </script>
     
